@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>数唱テスト（WAIS-IV形式）</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- TOP画面 -->
+  <section id="screen-top" class="screen active">
+    <div class="container">
+      <h1>数唱テスト</h1>
+      <div class="part-buttons">
+        <button class="btn btn-primary part-btn" data-part="forward">順唱</button>
+        <button class="btn btn-primary part-btn" data-part="backward">逆唱</button>
+        <button class="btn btn-primary part-btn" data-part="sequence">整列</button>
+      </div>
+      <p id="speech-error" class="error-message" hidden>
+        このブラウザは音声合成に対応していません。Chrome または Safari をお使いください。
+      </p>
+    </div>
+  </section>
+
+  <!-- 練習画面 -->
+  <section id="screen-practice" class="screen">
+    <div class="container">
+      <h2 id="practice-part-label">順唱 練習</h2>
+      <div class="rule-box">
+        <p id="practice-rule-text"></p>
+      </div>
+      <p id="practice-status" class="status-text"></p>
+      <div id="practice-feedback" class="feedback-area" hidden></div>
+      <div class="button-row">
+        <button id="btn-practice-start" class="btn btn-primary">読み上げ開始</button>
+        <button id="btn-test-start" class="btn btn-success" hidden>テスト開始</button>
+      </div>
+      <button id="btn-back-top" class="btn btn-secondary">← TOPへ戻る</button>
+    </div>
+  </section>
+
+  <!-- テスト画面 -->
+  <section id="screen-test" class="screen">
+    <div class="container">
+      <h2 id="test-part-label">順唱 テスト</h2>
+      <p id="test-status" class="status-text"></p>
+      <div id="countdown-display" class="countdown" hidden>
+        <span id="countdown-value">30</span>
+        <span class="countdown-unit">秒</span>
+      </div>
+      <div class="button-row">
+        <button id="btn-question-start" class="btn btn-primary">開始</button>
+      </div>
+      <div id="answer-form" class="answer-form" hidden>
+        <input
+          id="answer-input"
+          type="text"
+          inputmode="numeric"
+          pattern="[0-9]*"
+          placeholder="数字を入力"
+          autocomplete="off"
+        />
+        <button id="btn-answer-submit" class="btn btn-success">回答</button>
+      </div>
+      <div id="history-display" class="history-display"></div>
+    </div>
+  </section>
+
+  <!-- 結果画面 -->
+  <section id="screen-result" class="screen">
+    <div class="container">
+      <h2>結果</h2>
+      <div class="result-box">
+        <p id="result-part-label" class="result-part"></p>
+        <p class="result-label">最大正解桁数</p>
+        <p id="result-max-digits" class="result-digits">—</p>
+        <p id="result-bonus-label" class="result-bonus"></p>
+      </div>
+      <div class="button-row">
+        <button id="btn-restart" class="btn btn-primary">もう一度</button>
+        <button id="btn-to-top" class="btn btn-secondary">TOPへ戻る</button>
+      </div>
+    </div>
+  </section>
+
+  <script src="js/game.js"></script>
+  <script src="js/speech.js"></script>
+  <script src="js/timer.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
