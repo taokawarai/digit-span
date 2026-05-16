@@ -30,6 +30,17 @@
       <div class="rule-box">
         <p id="practice-rule-text"></p>
       </div>
+      <div class="speed-control">
+        <div class="speed-control-header">
+          <label for="speech-rate-slider">読み上げ速度</label>
+          <span class="speed-label-display speed-value">普通</span>
+        </div>
+        <input id="speech-rate-slider" class="speech-rate-slider" type="range" min="0.5" max="2.0" step="0.1" value="0.9" />
+        <div class="speed-marks">
+          <span>遅い</span>
+          <span>速い</span>
+        </div>
+      </div>
       <p id="practice-status" class="status-text"></p>
       <div id="practice-feedback" class="feedback-area" hidden></div>
       <div class="button-row">
@@ -44,6 +55,17 @@
   <section id="screen-test" class="screen">
     <div class="container">
       <h2 id="test-part-label">順唱 テスト</h2>
+      <div class="speed-control">
+        <div class="speed-control-header">
+          <label for="speech-rate-slider-test">読み上げ速度</label>
+          <span class="speed-label-display speed-value">普通</span>
+        </div>
+        <input id="speech-rate-slider-test" class="speech-rate-slider" type="range" min="0.5" max="2.0" step="0.1" value="0.9" />
+        <div class="speed-marks">
+          <span>遅い</span>
+          <span>速い</span>
+        </div>
+      </div>
       <p id="test-status" class="status-text"></p>
       <div id="countdown-display" class="countdown" hidden>
         <span id="countdown-value">30</span>
@@ -62,6 +84,9 @@
           autocomplete="off"
         />
         <button id="btn-answer-submit" class="btn btn-success">回答</button>
+      </div>
+      <div class="test-footer">
+        <button id="btn-test-back-top" class="btn btn-secondary">← TOPへ戻る</button>
       </div>
       <div id="history-display" class="history-display"></div>
     </div>

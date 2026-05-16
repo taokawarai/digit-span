@@ -150,6 +150,44 @@ h2 {
   line-height: 1.7;
 }
 
+.speed-control {
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 14px 20px;
+  box-shadow: var(--shadow);
+}
+
+.speed-control-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.speed-value {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.speed-control input[type="range"] {
+  width: 100%;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+  height: 6px;
+  margin: 0;
+}
+
+.speed-marks {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--color-secondary);
+  margin-top: 6px;
+}
+
 .status-text {
   text-align: center;
   font-size: 1rem;
@@ -254,6 +292,12 @@ h2 {
   flex-direction: column;
   gap: 8px;
   margin-top: 4px;
+}
+
+/* ===== Test Footer (back-to-top separator) ===== */
+.test-footer {
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 12px;
 }
 
 .history-entry {
