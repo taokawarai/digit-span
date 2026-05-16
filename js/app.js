@@ -86,6 +86,10 @@ function runPracticeQuestion() {
 function showPracticeInput() {
   var round = AppState.practiceRound;
   var statusEl = document.getElementById('practice-status');
+  var countdownDisplay = document.getElementById('practice-countdown-display');
+  var countdownValue = document.getElementById('practice-countdown-value');
+
+  statusEl.textContent = '練習 ' + (round + 1) + ' / 2 ：回答してください';
 
   // 練習用インラインフォームを動的生成
   var feedbackArea = document.getElementById('practice-feedback');
@@ -105,23 +109,36 @@ function showPracticeInput() {
     this.value = this.value.replace(/[^0-9]/g, '');
   });
 
+  // カウントダウン表示を初期化
+  countdownValue.textContent = '30';
+  countdownValue.classList.remove('warning');
+  countdownDisplay.hidden = false;
+
   practiceInput.focus();
 
   var _practiceTimer = new CountdownTimer(30, function(rem) {
-    statusEl.textContent = '練習 ' + (round + 1) + ' / 2 ：残り ' + rem + ' 秒';
+    countdownValue.textContent = rem;
+    if (rem <= 10) {
+      countdownValue.classList.add('warning');
+    } else {
+      countdownValue.classList.remove('warning');
+    }
   }, function() {
+    countdownDisplay.hidden = true;
     submitPracticeAnswer('');
   });
   _practiceTimer.start();
 
   btnSubmit.addEventListener('click', function() {
     _practiceTimer.stop();
+    countdownDisplay.hidden = true;
     submitPracticeAnswer(practiceInput.value);
   });
 
   practiceInput.addEventListener('keydown', function(e) {
     if (e.key === 'Enter') {
       _practiceTimer.stop();
+      countdownDisplay.hidden = true;
       submitPracticeAnswer(practiceInput.value);
     }
   });
@@ -131,6 +148,8 @@ function submitPracticeAnswer(inputStr) {
   var isCorrect = judgeAnswer(inputStr, AppState.correctAnswer);
   var feedbackArea = document.getElementById('practice-feedback');
   var statusEl = document.getElementById('practice-status');
+
+  document.getElementById('practice-countdown-display').hidden = true;
 
   feedbackArea.className = 'feedback-area ' + (isCorrect ? 'correct' : 'wrong');
   feedbackArea.innerHTML =

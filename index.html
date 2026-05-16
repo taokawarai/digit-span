@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>数唱テスト（WAIS-IV形式）</title>
+  <title>数唱テスト</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -49,6 +49,10 @@
         </div>
       </div>
       <p id="practice-status" class="status-text"></p>
+      <div id="practice-countdown-display" class="countdown" hidden>
+        <span id="practice-countdown-value">30</span>
+        <span class="countdown-unit">秒</span>
+      </div>
       <div id="practice-feedback" class="feedback-area" hidden></div>
       <div class="button-row">
         <button id="btn-practice-start" class="btn btn-primary">読み上げ開始</button>
