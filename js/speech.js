@@ -2,13 +2,8 @@
  * Web Speech API ラッパー
  */
 
-/**
- * 読み上げ設定
- *   rate     : 各数字の読み上げ速度（SpeechSynthesisUtterance.rate）
- *   interval : 数字と数字の間の無音時間（ms）
- * app.js のスライダーから updateSpeedSettings() 経由で変更される
- */
-var SpeechSettings = { rate: 0.9, interval: 500 };
+/** 読み上げ速度設定（app.js のスライダーから変更される） */
+var SpeechSettings = { rate: 0.9, joined: true };
 
 /**
  * 音声合成がサポートされているか確認する
@@ -20,9 +15,8 @@ function isSupported() {
 
 /**
  * 数字列を日本語で読み上げる
- * interval=0 の場合は全数字を1つの Utterance に結合して読み上げ
- * （ブラウザが utterance 間に入れるオーバーヘッドを完全に除去）
- * interval>0 の場合は onend+setTimeout の連鎖で間隔を制御
+ * joined=true  : 全数字を1つの Utterance に結合（間なし）
+ * joined=false : 各数字を個別 Utterance で読み上げ（rate に応じた間隔あり）
  * @param {number[]} digits - 読み上げる数字の配列
  * @param {function} onComplete - 読み上げ完了時のコールバック
  */
@@ -35,11 +29,11 @@ function speakDigits(digits, onComplete) {
   window.speechSynthesis.cancel();
 
   var rate = SpeechSettings.rate;
-  var interval = SpeechSettings.interval;
+  var joined = SpeechSettings.joined;
 
   function afterWarmup() {
-    if (interval === 0) {
-      // 間隔なしモード：全数字を1つの utterance にまとめて読む
+    if (joined) {
+      // 連続モード：全数字を1つの utterance にまとめる
       var text = digits.map(function(d) { return DIGIT_NAMES_JA[d]; }).join(' ');
       var u = new SpeechSynthesisUtterance(text);
       u.lang = 'ja-JP';
@@ -47,7 +41,8 @@ function speakDigits(digits, onComplete) {
       u.onend = function() { if (typeof onComplete === 'function') onComplete(); };
       window.speechSynthesis.speak(u);
     } else {
-      // 間隔ありモード：onend + setTimeout の連鎖
+      // 区切りモード：onend + setTimeout の連鎖（間隔は rate に反比例）
+      var interval = Math.max(50, Math.round(400 / rate));
       var i = 0;
       (function speakOne() {
         if (i >= digits.length) {
@@ -59,11 +54,8 @@ function speakDigits(digits, onComplete) {
         u.rate = rate;
         u.onend = function() {
           i++;
-          if (i < digits.length) {
-            setTimeout(speakOne, interval);
-          } else {
-            if (typeof onComplete === 'function') onComplete();
-          }
+          if (i < digits.length) { setTimeout(speakOne, interval); }
+          else { if (typeof onComplete === 'function') onComplete(); }
         };
         window.speechSynthesis.speak(u);
       })();

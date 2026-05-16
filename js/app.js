@@ -341,7 +341,7 @@ function appendHistoryEntry(isCorrect, seq, correctAnswer, inputStr) {
       '<div class="answer-line">正答：' + correctAnswer.join('') + '　入力：' + displayInput + '</div>' +
     '</span>';
 
-  container.appendChild(div);
+  container.insertBefore(div, container.firstChild);
 }
 
 /* ===== 結果表示 ===== */
@@ -374,34 +374,32 @@ document.addEventListener('DOMContentLoaded', function() {
   setupInputValidation();
 
   // 読み上げ速度スライダー（練習・テスト両画面で共有、相互同期）
-  function getRateLabel(sliderVal) {
-    var v = parseFloat(sliderVal);
-    if (v <= 0.6) return '遅い';
-    if (v <= 0.8) return 'やや遅い';
-    if (v <= 1.0) return '普通';
-    if (v <= 1.2) return 'やや速い';
-    if (v <= 1.5) return '速い';
-    return 'とても速い';
-  }
-
   function updateSpeedSettings(value) {
     var v = parseFloat(value);
-    // rate: 0.5→0.70, 0.9→0.91, 1.5→1.23, 2.0→1.50（線形補間）
-    SpeechSettings.rate = parseFloat((0.7 + (v - 0.5) * 0.533).toFixed(2));
-    // interval: 0.5→300ms, 0.9→220ms, 1.5→100ms, 2.0→0ms（線形）
-    SpeechSettings.interval = Math.max(0, Math.round(300 * (2.0 - v) / 1.5));
-    // 全スライダー・全ラベルを同期
+    SpeechSettings.rate = v;
     document.querySelectorAll('.speech-rate-slider').forEach(function(s) {
       s.value = value;
     });
     document.querySelectorAll('.speed-label-display').forEach(function(l) {
-      l.textContent = getRateLabel(v);
+      l.textContent = '×' + v.toFixed(1);
     });
   }
 
   document.querySelectorAll('.speech-rate-slider').forEach(function(slider) {
     slider.addEventListener('input', function() {
       updateSpeedSettings(this.value);
+    });
+  });
+
+  // 読み上げモードトグル（つなげる / 区切る）
+  document.querySelectorAll('.mode-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var mode = this.getAttribute('data-mode');
+      SpeechSettings.joined = (mode === 'joined');
+      // 全画面のセグメントボタンを同期
+      document.querySelectorAll('.mode-btn').forEach(function(b) {
+        b.classList.toggle('active', b.getAttribute('data-mode') === mode);
+      });
     });
   });
 
