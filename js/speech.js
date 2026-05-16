@@ -3,7 +3,7 @@
  */
 
 /** 読み上げ速度設定（app.js のスライダーから変更される） */
-var SpeechSettings = { rate: 0.9, joined: true };
+var SpeechSettings = { rate: 1.0, joined: false };
 
 /**
  * 音声合成がサポートされているか確認する
